@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yizhi.student.dao.StudentInfoDao">
+	
+	<!--int save(StudentInfoDO studentInfo);-->
+    <insert id="save">
+        insert into s_student_info values(null,#{studentId},#{examId},#{classId},#{studentName},#{certify},#{mailAddress},#{foreignLanaguage},#{studentSex},#{nation},#{political},#{cardId},#{telephone},#{subjectType},#{tocollege},#{tocampus},#{tomajor},#{birthplace},#{grade},#{isstate},#{birthday},#{note},#{addTime},#{addUserid},#{editTime},#{editUserid})
+    </insert>
+
+    <!--	List<StudentInfoDO> list(Map<String,Object> map);-->
+    <select id="list" resultType="com.yizhi.student.domain.StudentInfoDO">
+        select * from s_student_info
+
+        <trim prefix="where" suffixOverrides="and">
+            <if test="tocollegeId!=null and tocollegeId!=''">
+                tocollege=#{tocollegeId} and
+            </if>
+            <if test="tomajorId!=null and tomajorId!=''">
+                tomajor=#{tomajorId} and
+            </if>
+            <if test="classId!=null and classId!=''">
+                class_id=#{classId} and
+            </if>
+
+            <if test="name!=null and name!=''">
+                student_name like '%${name}%'
+            </if>
+        </trim>
+
+         limit #{start},#{pageSize};
+    </select>
+
+    <!--	int count(Map<String,Object> map);-->
+    <select id="count" resultType="int">
+       select count(*) from s_student_info
+
+        <trim prefix="where" suffixOverrides="and">
+            <if test="tocollegeId!=null and tocollegeId!=''">
+                tocollege=#{tocollegeId} and
+            </if>
+            <if test="tomajorId!=null and tomajorId!=''">
+                tomajor=#{tomajorId} and
+            </if>
+            <if test="classId!=null and classId!=''">
+                class_id=#{classId} and
+            </if>
+
+            <if test="name!=null and name!=''">
+                student_name like '%${name}%'
+            </if>
+        </trim>
+
+       ;
+    </select>
+
+    <!--	int remove(Integer id);-->
+    <delete id="remove">
+        delete from s_student_info where id=#{id};
+    </delete>
+
+    <!--int batchRemove(Integer ids[]);-->
+    <delete id="batchRemove">
+        delete from s_student_info where id in (
+        <foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>
+        );
+    </delete>
+
+    <!--	StudentInfoDO get(Integer id);-->
+    <select id="get" resultType="com.yizhi.student.domain.StudentInfoDO">
+        select * from s_student_info where id=#{id};
+    </select>
+    <!--	int update(StudentInfoDO studentInfo);-->
+<update id="update">
+     update s_student_info set student_id=#{studentId},exam_id=#{examId},class_id=#{classId},student_name=#{studentName},certify=#{certify},mail_address=#{mailAddress},foreign_lanaguage=#{foreignLanaguage},student_sex=#{studentSex},nation=#{nation},political=#{political},card_id=#{cardId},telephone=#{telephone},subject_type=#{subjectType},tocollege=#{tocollege},tocampus=#{tocampus},tomajor=#{tomajor},birthplace=#{birthplace},grade=#{grade},isstate=#{isstate},birthday=#{birthday},note=#{note},add_time=#{addTime},add_userid=#{addUserid},edit_time=#{editTime},edit_userid=#{editUserid} where id=#{id};
+</update>
+
+</mapper>
